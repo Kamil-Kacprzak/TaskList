@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaskList
+namespace TaskList.Application.Interfaces
 {
 	public interface IConsole
 	{

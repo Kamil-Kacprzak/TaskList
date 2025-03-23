@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading;
 
-namespace TaskList
+namespace TaskList.ConsoleApp.Tests
 {
 	public class BlockingStream : Stream
 	{

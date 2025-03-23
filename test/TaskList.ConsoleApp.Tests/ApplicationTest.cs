@@ -1,6 +1,4 @@
-using TaskList;
-
-namespace Tasks
+namespace TaskList.ConsoleApp.Tests
 {
 	[TestFixture]
 	public sealed class ApplicationTest
@@ -14,10 +12,10 @@ namespace Tasks
 		public void StartTheApplication()
 		{
 			this.console = new FakeConsole();
-			var taskList = new TaskList.TaskList(console);
+			var taskList = new MainProgramLoop(console);
 			this.applicationThread = new System.Threading.Thread(() => taskList.Run());
 			applicationThread.Start();
-			ReadLines(TaskList.TaskList.startupText);
+			ReadLines(MainProgramLoop.startupText);
 		}
 
 		[TearDown]
