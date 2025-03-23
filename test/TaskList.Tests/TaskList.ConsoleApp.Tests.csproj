@@ -19,6 +19,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\TaskList.ConsoleApp\TaskList.ConsoleApp.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Using Include="NUnit.Framework" />
     </ItemGroup>
 

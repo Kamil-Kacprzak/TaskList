@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TaskList
+namespace TaskList.ConsoleApp.Tests
 {
 	class ProducerConsumerStream : Stream
 	{

@@ -3,8 +3,10 @@ using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
+using TaskList;
+using TaskList.ConsoleApp;
 
-namespace TaskList
+namespace TaskList.ConsoleApp.Tests
 {
 	public class FakeConsole : IConsole
 	{

@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{02EA681E-C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList.Application", "src\TaskList.Application\TaskList.Application.csproj", "{DE031057-0CEE-DD8E-2EB6-C93C60E2A40A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList.Tests", "test\TaskList.Tests\TaskList.Tests.csproj", "{1DAC2F30-6338-D630-0F63-36F4336F7633}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList.ConsoleApp.Tests", "test\TaskList.Tests\TaskList.ConsoleApp.Tests.csproj", "{1DAC2F30-6338-D630-0F63-36F4336F7633}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList.WebApi", "src\TaskList.WebApi\TaskList.WebApi.csproj", "{F7060966-86AC-4454-A3F4-00F3228B4B0F}"
 EndProject

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TaskList
+namespace TaskList.ConsoleApp
 {
 	public class Task
 	{

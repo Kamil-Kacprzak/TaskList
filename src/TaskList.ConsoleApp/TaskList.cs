@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace TaskList
+﻿namespace TaskList.ConsoleApp
 {
 	public sealed class TaskList
 	{
@@ -68,7 +64,7 @@ namespace TaskList
 			foreach (var project in tasks) {
 				console.WriteLine(project.Key);
 				foreach (var task in project.Value) {
-					console.WriteLine("    [{0}] {1}: {2}", (task.Done ? 'x' : ' '), task.Id, task.Description);
+					console.WriteLine("    [{0}] {1}: {2}", task.Done ? 'x' : ' ', task.Id, task.Description);
 				}
 				console.WriteLine();
 			}
@@ -82,8 +78,12 @@ namespace TaskList
 				AddProject(subcommandRest[1]);
 			} else if (subcommand == "task") {
 				var projectTask = subcommandRest[1].Split(" ".ToCharArray(), 2);
-				AddTask(projectTask[0], projectTask[1]);
-			}
+				if (projectTask.Length > 1) {
+					AddTask(projectTask[0], projectTask[1]);
+				} else { 
+					Console.WriteLine("Invalid arguments"); 
+				}
+            }
 		}
 
 		private void AddProject(string name)

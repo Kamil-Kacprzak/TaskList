@@ -1,6 +1,6 @@
 using System;
 
-namespace TaskList
+namespace TaskList.ConsoleApp
 {
 	public class RealConsole : IConsole
 	{

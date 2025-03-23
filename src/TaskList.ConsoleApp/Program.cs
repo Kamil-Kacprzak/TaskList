@@ -1,4 +1,1 @@
-﻿if (args.Length > 0)
-{
-    TaskList.TaskList.Main(args);
-}
+﻿TaskList.ConsoleApp.TaskList.Main(args);
