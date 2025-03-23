@@ -19,10 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\TaskList\TaskList.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Using Include="NUnit.Framework" />
     </ItemGroup>
 

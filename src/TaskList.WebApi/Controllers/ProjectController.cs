@@ -30,5 +30,12 @@ namespace TaskList.WebApi.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet]
+        public IEnumerable<string> GetTasks()
+        {
+            var tasks = Enumerable.Range(1, 5).Select(index => "task" + index).ToArray();
+            return tasks;
+        }
     }
 }
