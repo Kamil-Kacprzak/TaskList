@@ -1,10 +1,4 @@
-using NUnit.Framework;
-using System;
-using System.IO;
-using System.IO.Pipes;
-using System.Threading;
-using TaskList;
-using TaskList.ConsoleApp;
+using TaskList.Application.Interfaces;
 
 namespace TaskList.ConsoleApp.Tests
 {

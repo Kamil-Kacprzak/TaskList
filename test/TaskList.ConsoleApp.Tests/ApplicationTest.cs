@@ -12,10 +12,10 @@ namespace TaskList.ConsoleApp.Tests
 		public void StartTheApplication()
 		{
 			this.console = new FakeConsole();
-			var taskList = new TaskList(console);
+			var taskList = new MainProgramLoop(console);
 			this.applicationThread = new System.Threading.Thread(() => taskList.Run());
 			applicationThread.Start();
-			ReadLines(TaskList.startupText);
+			ReadLines(MainProgramLoop.startupText);
 		}
 
 		[TearDown]

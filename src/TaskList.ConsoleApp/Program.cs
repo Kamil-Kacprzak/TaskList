@@ -1,1 +1,1 @@
-﻿TaskList.ConsoleApp.TaskList.Main(args);
+﻿TaskList.ConsoleApp.MainProgramLoop.Main(args);

@@ -7,7 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>Tasks</RootNamespace>
+        <RootNamespace>TaskList.ConsoleApp.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\TaskList.Application\TaskList.Application.csproj" />
       <ProjectReference Include="..\..\src\TaskList.ConsoleApp\TaskList.ConsoleApp.csproj" />
     </ItemGroup>
 

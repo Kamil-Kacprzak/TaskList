@@ -1,21 +1,24 @@
-﻿namespace TaskList.ConsoleApp
+﻿using TaskList.Application.Interfaces;
+using TaskListModels = TaskList.Application.Models;
+
+namespace TaskList.ConsoleApp
 {
-	public sealed class TaskList
+	public sealed class MainProgramLoop
 	{
 		private const string QUIT = "quit";
 		public static readonly string startupText = "Welcome to TaskList! Type 'help' for available commands.";
 
-		private readonly IDictionary<string, IList<Task>> tasks = new Dictionary<string, IList<Task>>();
+		private readonly IDictionary<string, IList<TaskListModels.Task>> tasks = new Dictionary<string, IList<TaskListModels.Task>>();
 		private readonly IConsole console;
 
 		private long lastId = 0;
 
 		public static void Main(string[] args)
 		{
-			new TaskList(new RealConsole()).Run();
+			new MainProgramLoop(new RealConsole()).Run();
 		}
 
-		public TaskList(IConsole console)
+		public MainProgramLoop(IConsole console)
 		{
 			this.console = console;
 		}
@@ -64,7 +67,7 @@
 			foreach (var project in tasks) {
 				console.WriteLine(project.Key);
 				foreach (var task in project.Value) {
-					console.WriteLine("    [{0}] {1}: {2}", task.Done ? 'x' : ' ', task.Id, task.Description);
+					console.WriteLine("    [{0}] {1}: {2}", task.IsDone ? 'x' : ' ', task.SequentialId, task.TaskName);
 				}
 				console.WriteLine();
 			}
@@ -88,17 +91,17 @@
 
 		private void AddProject(string name)
 		{
-			tasks[name] = new List<Task>();
+			tasks[name] = new List<TaskListModels.Task>();
 		}
 
 		private void AddTask(string project, string description)
 		{
-			if (!tasks.TryGetValue(project, out IList<Task> projectTasks))
+			if (!tasks.TryGetValue(project, out IList<TaskListModels.Task> projectTasks))
 			{
 				Console.WriteLine("Could not find a project with the name \"{0}\".", project);
 				return;
 			}
-			projectTasks.Add(new Task { Id = NextId(), Description = description, Done = false });
+			projectTasks.Add(new TaskListModels.Task { SequentialId = NextId(), TaskName = description, IsDone = false });
 		}
 
 		private void Check(string idString)
@@ -115,7 +118,7 @@
 		{
 			int id = int.Parse(idString);
 			var identifiedTask = tasks
-				.Select(project => project.Value.FirstOrDefault(task => task.Id == id))
+				.Select(project => project.Value.FirstOrDefault(task => task.SequentialId == id))
 				.Where(task => task != null)
 				.FirstOrDefault();
 			if (identifiedTask == null) {
@@ -123,7 +126,7 @@
 				return;
 			}
 
-			identifiedTask.Done = done;
+			identifiedTask.IsDone = done;
 		}
 
 		private void Help()
