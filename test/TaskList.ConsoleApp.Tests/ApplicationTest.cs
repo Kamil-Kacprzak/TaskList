@@ -15,7 +15,7 @@ namespace TaskList.ConsoleApp.Tests
 			var taskList = new MainProgramLoop(console);
 			this.applicationThread = new System.Threading.Thread(() => taskList.Run());
 			applicationThread.Start();
-			ReadLines(MainProgramLoop.startupText);
+			ReadLines(ProgramLoop.startupText);
 		}
 
 		[TearDown]

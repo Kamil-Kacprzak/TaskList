@@ -1,7 +1,6 @@
-﻿using ConsoleApp = TaskList.ConsoleApp;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
-List<Process> _startedProcesses = new List<Process>();
+IList<Process> _startedProcesses = new List<Process>();
 
 int choice;
 

@@ -2,7 +2,7 @@
 
 namespace TaskList.ConsoleApp
 {
-	public sealed class MainProgramLoop
+	public sealed class ProgramLoop
 	{
 		private const string QUIT = "quit";
 		private const string startupText = "Welcome to TaskList! Type 'help' for available commands.";
@@ -17,37 +17,57 @@ namespace TaskList.ConsoleApp
 			Console.WriteLine(startupText);
 			while (true) {
 				Console.Write("> ");
-				var command = Console.ReadLine();
-				if (command == QUIT) {
+
+				var command = ParseCommand(Console.ReadLine());
+				
+				if(command.Length == 0)
+                {
+                    continue;
+                }
+
+                if (command[0] == QUIT) {
 					break;
 				}
+
 				Execute(command);
 			}
 		}
 
-		private void Execute(string commandLine)
+        private string[] ParseCommand(string? input)
+        {
+			if (input == null)
+			{
+				return new string[] { };
+			}
+
+            string[] result = input
+				.ToLowerInvariant()
+				.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+			return result;
+        }
+
+        private void Execute(string[] command)
 		{
-			var commandRest = commandLine.Split(" ".ToCharArray(), 2);
-			var command = commandRest[0];
-			switch (command) {
-			case "show":
-				Show();
-				break;
-			case "add":
-				Add(commandRest[1]);
-				break;
-			case "check":
-				Check(commandRest[1]);
-				break;
-			case "uncheck":
-				Uncheck(commandRest[1]);
-				break;
-			case "help":
-				Help();
-				break;
-			default:
-				Error(command);
-				break;
+			switch (command[0]) {
+				case "show":
+					Show();
+					break;
+				case "add":
+					Add(command[1]);
+					break;
+				case "check":
+					Check(command[1]);
+					break;
+				case "uncheck":
+					Uncheck(command[1]);
+					break;
+				case "help":
+					Help();
+					break;
+				default:
+					Error(command[0]);
+					break;
 			}
 		}
 
@@ -111,7 +131,7 @@ namespace TaskList.ConsoleApp
 				.Where(task => task != null)
 				.FirstOrDefault();
 			if (identifiedTask == null) {
-				Console.WriteLine("Could not find a task with an ID of {0}.", id);
+				Console.WriteLine($"Could not find a task with an ID of {id}.");
 				return;
 			}
 
@@ -131,7 +151,7 @@ namespace TaskList.ConsoleApp
 
 		private void Error(string command)
 		{
-			Console.WriteLine("I don't know what the command \"{0}\" is.", command);
+			Console.WriteLine($"I don't know what the command \"{command}\" is.");
 		}
 
 		private long NextId()

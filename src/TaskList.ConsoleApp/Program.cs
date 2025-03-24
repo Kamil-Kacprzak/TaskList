@@ -5,7 +5,7 @@
         public static void Main(string[] args)
         {
             Console.Clear();
-            new MainProgramLoop().Run();
+            new ProgramLoop().Run();
         }
 
     }
