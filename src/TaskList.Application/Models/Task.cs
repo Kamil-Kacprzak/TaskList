@@ -8,7 +8,7 @@ namespace TaskList.Application.Models
 
         public bool IsDone { get; set; }
 
-        public DateOnly Date { get; set; }
+        public DateOnly DeadlineDate { get; set; }
         public long ProjectId { get; set; }
     }
 }

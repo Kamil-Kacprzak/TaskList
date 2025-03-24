@@ -1,5 +1,4 @@
 ﻿using TaskList.Application.Interfaces;
-using TaskList.Application.Models;
 
 namespace TaskList.Application.Services
 {
@@ -29,7 +28,8 @@ namespace TaskList.Application.Services
 
         public void CheckTask(long id)
         {
-            var task = _tasks.Find(task => task.SequentialId == id);
+            var task = GetTask(id);
+
             if (task != null)
             {
                 task.IsDone = true;
@@ -41,7 +41,8 @@ namespace TaskList.Application.Services
         }
         public void UncheckTask(long id)
         {
-            var task = _tasks.Find(task => task.SequentialId == id);
+            var task = GetTask(id);
+
             if (task != null)
             {
                 task.IsDone = false;
@@ -58,6 +59,24 @@ namespace TaskList.Application.Services
             {
                 Console.WriteLine("    [{0}] {1}: {2}", task.IsDone ? 'x' : ' ', task.SequentialId, task.TaskName);
             }
+        }
+
+        public Models.Task? GetTask(long id)
+        {
+            var task = _tasks.Find(task => task.SequentialId == id);
+            return task ?? null;
+        }
+
+        public void UpdateTaskDeadline(long id, DateOnly deadline)
+        {
+            var task = GetTask(id);
+            if (task == null)
+            {
+                Console.WriteLine("Task not found");
+                return;
+            }
+            task.DeadlineDate = deadline;
+            _taskRepository.UpdateTask(task);
         }
     }
 }
