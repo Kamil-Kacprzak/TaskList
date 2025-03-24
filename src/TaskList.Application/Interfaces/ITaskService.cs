@@ -8,5 +8,6 @@
         void ShowTasks();
         Models.Task? GetTask(long id);
         void UpdateTaskDeadline(long id, DateOnly deadline);
+        void ViewTasksByDeadline();
     }
 }

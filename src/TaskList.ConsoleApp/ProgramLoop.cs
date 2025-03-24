@@ -16,10 +16,10 @@ namespace TaskList.ConsoleApp
 
         public ProgramLoop()
 		{
-            this._projectRepository = new InMemoryProjectRepository();
-            this._taskRepository = new InMemoryTaskRepository();
-            this._taskService = new TaskService(_taskRepository);
-            this._projectService = new ProjectService(_projectRepository);
+            _projectRepository = new InMemoryProjectRepository();
+            _taskRepository = new InMemoryTaskRepository();
+            _projectService = new ProjectService(_projectRepository);
+            _taskService = new TaskService(_taskRepository, _projectService);
         }
 
         public void Run()
@@ -66,6 +66,9 @@ namespace TaskList.ConsoleApp
 					break;
                 case "today":
                     _projectService.ShowTasksWithTodayDeadlineDate();
+                    break;
+                case "view-by-deadline":
+                    _taskService.ViewTasksByDeadline();
                     break;
                 case "add":
 					EvaluateAddCommand(command);
@@ -167,6 +170,7 @@ namespace TaskList.ConsoleApp
 			Console.WriteLine("Commands:");
 			Console.WriteLine("  show");
 			Console.WriteLine("  today");
+			Console.WriteLine("  view-by-deadline");
 			Console.WriteLine("  add project <project name>");
 			Console.WriteLine("  add task <project name> <task description>");
 			Console.WriteLine("  deadline <task ID> <date>");

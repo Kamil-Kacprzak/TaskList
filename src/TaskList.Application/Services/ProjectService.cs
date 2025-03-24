@@ -35,6 +35,11 @@ namespace TaskList.Application.Services
             }
         }
 
+        public Project? GetProjectById(long projectId)
+        {
+            return _projects.FirstOrDefault(p => p.SequentialId == projectId);
+        }
+
         public Project? GetProjectByName(string projectName)
         {
             return _projects.FirstOrDefault(p => p.ProjectName == projectName);
