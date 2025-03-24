@@ -15,7 +15,7 @@ namespace TaskList.WebApi.Controllers
             _projectService = projectService;
         }
 
-        [HttpPost("/project", Name = "AddProject")]
+        [HttpPost("", Name = "AddProject")]
         public async Task<IActionResult> AddProject(string projectName)
         {
             if (projectName is null || projectName.Length == 0)
@@ -33,6 +33,30 @@ namespace TaskList.WebApi.Controllers
             }
 
             return CreatedAtAction("AddProject", new { projectName });
+        }
+
+        [HttpPost("/{project_id}/task", Name = "AddTaskToTheProject")]
+        public async Task<IActionResult> AddTaskToTheProject(int project_id, string taskName)
+        {
+            if (taskName is null || taskName.Length == 0)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    var project = _projectService.GetProjectById(project_id);
+                    project?.Tasks.Add(new TaskListModels.Task { TaskName = taskName });
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+            return CreatedAtAction("AddTaskToTheProject", new { taskName });
         }
 
         //[HttpGet("tasks", Name = "GetTasks")]
