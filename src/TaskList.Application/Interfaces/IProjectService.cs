@@ -9,7 +9,7 @@ namespace TaskList.Application.Interfaces
 {
     public interface IProjectService
     {
-        void AddProject(string projectName);
+        Project AddProject(string projectName);
         void AddTaskToProject(Project project, Models.Task task);
         List<Models.Task> GetTasksByProject(string projectName);
         Project? GetProjectByName(string projectName);

@@ -16,7 +16,7 @@ namespace TaskList.Application.Services
             _projectRepository = projectRepository;
             _projects = _projectRepository.GetAllProjects();
         }
-        public void AddProject(string projectName)
+        public Project AddProject(string projectName)
         {
             var project = new Project
             {
@@ -24,6 +24,8 @@ namespace TaskList.Application.Services
                 SequentialId = _nextProjectId++
             };
             _projects.Add(project);
+            
+            return project;
         }
 
         public void AddTaskToProject(Project project, Models.Task task)
