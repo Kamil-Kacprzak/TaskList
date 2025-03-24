@@ -1,34 +1,23 @@
-﻿using TaskList.Application.Interfaces;
-using TaskListModels = TaskList.Application.Models;
+﻿using TaskListModels = TaskList.Application.Models;
 
 namespace TaskList.ConsoleApp
 {
 	public sealed class MainProgramLoop
 	{
 		private const string QUIT = "quit";
-		public static readonly string startupText = "Welcome to TaskList! Type 'help' for available commands.";
+		private const string startupText = "Welcome to TaskList! Type 'help' for available commands.";
 
 		private readonly IDictionary<string, IList<TaskListModels.Task>> tasks = new Dictionary<string, IList<TaskListModels.Task>>();
-		private readonly IConsole console;
 
 		private long lastId = 0;
 
-		public static void Main(string[] args)
-		{
-			new MainProgramLoop(new RealConsole()).Run();
-		}
-
-		public MainProgramLoop(IConsole console)
-		{
-			this.console = console;
-		}
 
 		public void Run()
 		{
-			console.WriteLine(startupText);
+			Console.WriteLine(startupText);
 			while (true) {
-				console.Write("> ");
-				var command = console.ReadLine();
+				Console.Write("> ");
+				var command = Console.ReadLine();
 				if (command == QUIT) {
 					break;
 				}
@@ -65,11 +54,11 @@ namespace TaskList.ConsoleApp
 		private void Show()
 		{
 			foreach (var project in tasks) {
-				console.WriteLine(project.Key);
+				Console.WriteLine(project.Key);
 				foreach (var task in project.Value) {
-					console.WriteLine("    [{0}] {1}: {2}", task.IsDone ? 'x' : ' ', task.SequentialId, task.TaskName);
+					Console.WriteLine("    [{0}] {1}: {2}", task.IsDone ? 'x' : ' ', task.SequentialId, task.TaskName);
 				}
-				console.WriteLine();
+				Console.WriteLine();
 			}
 		}
 
@@ -83,8 +72,8 @@ namespace TaskList.ConsoleApp
 				var projectTask = subcommandRest[1].Split(" ".ToCharArray(), 2);
 				if (projectTask.Length > 1) {
 					AddTask(projectTask[0], projectTask[1]);
-				} else { 
-					Console.WriteLine("Invalid arguments"); 
+				} else {
+                    Console.WriteLine("Invalid arguments"); 
 				}
             }
 		}
@@ -98,7 +87,7 @@ namespace TaskList.ConsoleApp
 		{
 			if (!tasks.TryGetValue(project, out IList<TaskListModels.Task> projectTasks))
 			{
-				Console.WriteLine("Could not find a project with the name \"{0}\".", project);
+                Console.WriteLine("Could not find a project with the name \"{0}\".", project);
 				return;
 			}
 			projectTasks.Add(new TaskListModels.Task { SequentialId = NextId(), TaskName = description, IsDone = false });
@@ -122,7 +111,7 @@ namespace TaskList.ConsoleApp
 				.Where(task => task != null)
 				.FirstOrDefault();
 			if (identifiedTask == null) {
-				console.WriteLine("Could not find a task with an ID of {0}.", id);
+				Console.WriteLine("Could not find a task with an ID of {0}.", id);
 				return;
 			}
 
@@ -131,18 +120,18 @@ namespace TaskList.ConsoleApp
 
 		private void Help()
 		{
-			console.WriteLine("Commands:");
-			console.WriteLine("  show");
-			console.WriteLine("  add project <project name>");
-			console.WriteLine("  add task <project name> <task description>");
-			console.WriteLine("  check <task ID>");
-			console.WriteLine("  uncheck <task ID>");
-			console.WriteLine();
+			Console.WriteLine("Commands:");
+			Console.WriteLine("  show");
+			Console.WriteLine("  add project <project name>");
+			Console.WriteLine("  add task <project name> <task description>");
+			Console.WriteLine("  check <task ID>");
+			Console.WriteLine("  uncheck <task ID>");
+			Console.WriteLine();
 		}
 
 		private void Error(string command)
 		{
-			console.WriteLine("I don't know what the command \"{0}\" is.", command);
+			Console.WriteLine("I don't know what the command \"{0}\" is.", command);
 		}
 
 		private long NextId()

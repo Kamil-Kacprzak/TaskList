@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35913.81 d17.13
+VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DCB36901-FDF1-4674-808F-5061A787B41F}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,6 +21,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList.ConsoleApp", "src\TaskList.ConsoleApp\TaskList.ConsoleApp.csproj", "{F384D71D-04B4-454C-98A5-6C24BFE5AA9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList.ConsoleApp.Tests", "test\TaskList.ConsoleApp.Tests\TaskList.ConsoleApp.Tests.csproj", "{0EBBBBC2-B465-A1AC-3BEC-E047418E0DA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList.Main", "src\TaskList.Main\TaskList.Main.csproj", "{DFC5A6AA-98E4-41B6-BE4D-BC0E456A9370}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{0EBBBBC2-B465-A1AC-3BEC-E047418E0DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EBBBBC2-B465-A1AC-3BEC-E047418E0DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EBBBBC2-B465-A1AC-3BEC-E047418E0DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFC5A6AA-98E4-41B6-BE4D-BC0E456A9370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFC5A6AA-98E4-41B6-BE4D-BC0E456A9370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFC5A6AA-98E4-41B6-BE4D-BC0E456A9370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFC5A6AA-98E4-41B6-BE4D-BC0E456A9370}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
