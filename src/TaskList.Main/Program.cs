@@ -38,7 +38,7 @@ void MatchUserChoice(int choice)
             StartConsoleApp();
 
             Console.Clear();
-            Console.WriteLine("Web Api is running...");
+            Console.WriteLine("Console App is running.");
             break;
         case 2:
             Console.WriteLine("Running Web Api...");

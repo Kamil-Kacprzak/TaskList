@@ -1,4 +1,6 @@
-﻿using TaskListModels = TaskList.Application.Models;
+﻿using TaskList.Application.Interfaces;
+using TaskList.Application.Persistance;
+using TaskList.Application.Services;
 
 namespace TaskList.ConsoleApp
 {
@@ -7,12 +9,20 @@ namespace TaskList.ConsoleApp
 		private const string QUIT = "quit";
 		private const string startupText = "Welcome to TaskList! Type 'help' for available commands.";
 
-		private readonly IDictionary<string, IList<TaskListModels.Task>> tasks = new Dictionary<string, IList<TaskListModels.Task>>();
+		private readonly ITaskService _taskService;
+		private readonly IProjectService _projectService;
+        private readonly IProjectRepository _projectRepository;
+        private readonly ITaskRepository _taskRepository;
 
-		private long lastId = 0;
+        public ProgramLoop()
+		{
+            this._projectRepository = new InMemoryProjectRepository();
+            this._taskRepository = new InMemoryTaskRepository();
+            this._taskService = new TaskService(_taskRepository);
+            this._projectService = new ProjectService(_projectRepository);
+        }
 
-
-		public void Run()
+        public void Run()
 		{
 			Console.WriteLine(startupText);
 			while (true) {
@@ -49,94 +59,79 @@ namespace TaskList.ConsoleApp
 
         private void Execute(string[] command)
 		{
+            long id;
 			switch (command[0]) {
 				case "show":
-					Show();
+					_projectService.ShowTasksGroupedByProject();
 					break;
 				case "add":
-					Add(command[1]);
+					EvaluateAddCommand(command);
 					break;
 				case "check":
-					Check(command[1]);
-					break;
-				case "uncheck":
-					Uncheck(command[1]);
-					break;
-				case "help":
+                    id = ValidateCheckingCommand(command);
+                    _taskService.CheckTask(id);
+                    break;
+                case "uncheck":
+					id = ValidateCheckingCommand(command);
+                    _taskService.UncheckTask(id);
+                    break;
+                case "help":
 					Help();
 					break;
-				default:
+                case "clear":
+                    Console.Clear();
+                    Console.WriteLine(startupText);
+                    break;
+                default:
 					Error(command[0]);
 					break;
 			}
 		}
 
-		private void Show()
-		{
-			foreach (var project in tasks) {
-				Console.WriteLine(project.Key);
-				foreach (var task in project.Value) {
-					Console.WriteLine("    [{0}] {1}: {2}", task.IsDone ? 'x' : ' ', task.SequentialId, task.TaskName);
-				}
-				Console.WriteLine();
-			}
-		}
-
-		private void Add(string commandLine)
-		{
-			var subcommandRest = commandLine.Split(" ".ToCharArray(), 2);
-			var subcommand = subcommandRest[0];
-			if (subcommand == "project") {
-				AddProject(subcommandRest[1]);
-			} else if (subcommand == "task") {
-				var projectTask = subcommandRest[1].Split(" ".ToCharArray(), 2);
-				if (projectTask.Length > 1) {
-					AddTask(projectTask[0], projectTask[1]);
-				} else {
-                    Console.WriteLine("Invalid arguments"); 
-				}
+        private long ValidateCheckingCommand(string[] command)
+        {
+            try
+            {
+                if (command.Length == 2)
+                {
+                    long.TryParse(command[1], out long id);
+					return id;
+                }
+                else
+                {
+                    throw new ArgumentException("Wrong amount of parameters");
+                }
             }
-		}
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+			return -1;
+        }
 
-		private void AddProject(string name)
-		{
-			tasks[name] = new List<TaskListModels.Task>();
-		}
-
-		private void AddTask(string project, string description)
-		{
-			if (!tasks.TryGetValue(project, out IList<TaskListModels.Task> projectTasks))
-			{
-                Console.WriteLine("Could not find a project with the name \"{0}\".", project);
-				return;
-			}
-			projectTasks.Add(new TaskListModels.Task { SequentialId = NextId(), TaskName = description, IsDone = false });
-		}
-
-		private void Check(string idString)
-		{
-			SetDone(idString, true);
-		}
-
-		private void Uncheck(string idString)
-		{
-			SetDone(idString, false);
-		}
-
-		private void SetDone(string idString, bool done)
-		{
-			int id = int.Parse(idString);
-			var identifiedTask = tasks
-				.Select(project => project.Value.FirstOrDefault(task => task.SequentialId == id))
-				.Where(task => task != null)
-				.FirstOrDefault();
-			if (identifiedTask == null) {
-				Console.WriteLine($"Could not find a task with an ID of {id}.");
-				return;
-			}
-
-			identifiedTask.IsDone = done;
-		}
+        private void EvaluateAddCommand(string[] command)
+        {
+            string subcommand = command[1];
+            if (subcommand == "project" && command.Length == 3)
+            {
+				_projectService.AddProject(command[2]);
+            }
+            else if (subcommand == "task" && command.Length == 4)
+            {
+				var project = _projectService.GetProjectByName(command[2]);
+                if (project == null)
+				{
+                    Console.WriteLine("Project not found");
+                    return;
+                }
+				var task = _taskService.CreateTask(command[3]);
+                _projectService.AddTaskToProject(project, task);
+            }
+            else
+            {
+                Console.WriteLine("Invalid arguments");
+            }
+        }	
 
 		private void Help()
 		{
@@ -146,17 +141,15 @@ namespace TaskList.ConsoleApp
 			Console.WriteLine("  add task <project name> <task description>");
 			Console.WriteLine("  check <task ID>");
 			Console.WriteLine("  uncheck <task ID>");
+			Console.WriteLine("  clear");
+            Console.WriteLine("  help");
+            Console.WriteLine("  quit");
 			Console.WriteLine();
 		}
 
 		private void Error(string command)
 		{
 			Console.WriteLine($"I don't know what the command \"{command}\" is.");
-		}
-
-		private long NextId()
-		{
-			return ++lastId;
 		}
 	}
 }
