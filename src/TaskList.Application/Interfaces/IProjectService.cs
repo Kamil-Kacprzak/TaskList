@@ -14,5 +14,6 @@ namespace TaskList.Application.Interfaces
         List<Models.Task> GetTasksByProject(string projectName);
         Project? GetProjectByName(string projectName);
         void ShowTasksGroupedByProject();
+        void ShowTasksWithTodayDeadlineDate();
     }
 }

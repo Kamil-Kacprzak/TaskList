@@ -57,5 +57,41 @@ namespace TaskList.Application.Services
                 Console.WriteLine();
             }
         }
+
+        public void ShowTasksWithTodayDeadlineDate()
+        {
+            var dateTime = DateTime.Now;
+            var todaysDate = DateOnly.FromDateTime(dateTime);
+            var projectsWithTodaysDeadlines = new Dictionary<Project, List<Models.Task>>();
+
+            foreach (var project in _projects)
+            {
+                var tasks = new List<Models.Task>();
+                foreach (var task in project.Tasks)
+                {
+                    if (task.DeadlineDate == todaysDate)
+                    {
+                        tasks.Add(task);
+                    }
+                }
+
+                if (tasks.Count > 0)
+                {
+                    projectsWithTodaysDeadlines.Add(project, tasks);
+                }
+            }
+            
+            Console.WriteLine($"Deadline is: {todaysDate}");
+            
+            foreach (var project in projectsWithTodaysDeadlines)
+            {
+                Console.WriteLine(project.Key.ProjectName);
+                foreach (var task in project.Value)
+                {
+                    Console.WriteLine("    [{0}] {1}: {2}", task.IsDone ? 'x' : ' ', task.SequentialId, task.TaskName);
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
