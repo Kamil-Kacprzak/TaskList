@@ -14,7 +14,7 @@ namespace TaskList.WebApi.Controllers
             {
                 TaskName = "task1",
                 SequentialId = 1,
-                Date = new DateOnly(2022, 1, 1)
+                DeadlineDate = new DateOnly(2022, 1, 1)
             };
             var tasks = new List<TaskListModels.Task>() { task };
             return tasks;

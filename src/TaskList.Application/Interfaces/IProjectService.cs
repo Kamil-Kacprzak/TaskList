@@ -13,6 +13,8 @@ namespace TaskList.Application.Interfaces
         void AddTaskToProject(Project project, Models.Task task);
         List<Models.Task> GetTasksByProject(string projectName);
         Project? GetProjectByName(string projectName);
+        Project? GetProjectById(long projectId);
         void ShowTasksGroupedByProject();
+        void ShowTasksWithTodayDeadlineDate();
     }
 }

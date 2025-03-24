@@ -35,6 +35,11 @@ namespace TaskList.Application.Services
             }
         }
 
+        public Project? GetProjectById(long projectId)
+        {
+            return _projects.FirstOrDefault(p => p.SequentialId == projectId);
+        }
+
         public Project? GetProjectByName(string projectName)
         {
             return _projects.FirstOrDefault(p => p.ProjectName == projectName);
@@ -51,6 +56,42 @@ namespace TaskList.Application.Services
             {
                 Console.WriteLine(project.ProjectName);
                 foreach (var task in project.Tasks)
+                {
+                    Console.WriteLine("    [{0}] {1}: {2}", task.IsDone ? 'x' : ' ', task.SequentialId, task.TaskName);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public void ShowTasksWithTodayDeadlineDate()
+        {
+            var dateTime = DateTime.Now;
+            var todaysDate = DateOnly.FromDateTime(dateTime);
+            var projectsWithTodaysDeadlines = new Dictionary<Project, List<Models.Task>>();
+
+            foreach (var project in _projects)
+            {
+                var tasks = new List<Models.Task>();
+                foreach (var task in project.Tasks)
+                {
+                    if (task.DeadlineDate == todaysDate)
+                    {
+                        tasks.Add(task);
+                    }
+                }
+
+                if (tasks.Count > 0)
+                {
+                    projectsWithTodaysDeadlines.Add(project, tasks);
+                }
+            }
+            
+            Console.WriteLine($"Deadline is: {todaysDate}");
+            
+            foreach (var project in projectsWithTodaysDeadlines)
+            {
+                Console.WriteLine(project.Key.ProjectName);
+                foreach (var task in project.Value)
                 {
                     Console.WriteLine("    [{0}] {1}: {2}", task.IsDone ? 'x' : ' ', task.SequentialId, task.TaskName);
                 }

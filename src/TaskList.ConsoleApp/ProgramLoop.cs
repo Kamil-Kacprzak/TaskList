@@ -16,10 +16,10 @@ namespace TaskList.ConsoleApp
 
         public ProgramLoop()
 		{
-            this._projectRepository = new InMemoryProjectRepository();
-            this._taskRepository = new InMemoryTaskRepository();
-            this._taskService = new TaskService(_taskRepository);
-            this._projectService = new ProjectService(_projectRepository);
+            _projectRepository = new InMemoryProjectRepository();
+            _taskRepository = new InMemoryTaskRepository();
+            _projectService = new ProjectService(_projectRepository);
+            _taskService = new TaskService(_taskRepository, _projectService);
         }
 
         public void Run()
@@ -64,10 +64,19 @@ namespace TaskList.ConsoleApp
 				case "show":
 					_projectService.ShowTasksGroupedByProject();
 					break;
-				case "add":
+                case "today":
+                    _projectService.ShowTasksWithTodayDeadlineDate();
+                    break;
+                case "view-by-deadline":
+                    _taskService.ViewTasksByDeadline();
+                    break;
+                case "add":
 					EvaluateAddCommand(command);
 					break;
-				case "check":
+                case "deadline":
+                    AddDeadlineToTask(command);
+                    break;
+                case "check":
                     id = ValidateCheckingCommand(command);
                     _taskService.CheckTask(id);
                     break;
@@ -87,6 +96,29 @@ namespace TaskList.ConsoleApp
 					break;
 			}
 		}
+
+        private void AddDeadlineToTask(string[] command)
+        {
+            if(command.Length != 3)
+            {
+                Console.WriteLine("Invalid number of arguments");
+                return;
+            }
+
+            if (!long.TryParse(command[1], out long id))
+            {
+                Console.WriteLine("Invalid task id");
+                return;
+            }
+
+            if (!DateOnly.TryParse(command[2], out DateOnly date))
+            {
+                Console.WriteLine("Invalid date");
+                return;
+            }
+            
+            _taskService.UpdateTaskDeadline(id, date);
+        }
 
         private long ValidateCheckingCommand(string[] command)
         {
@@ -137,8 +169,11 @@ namespace TaskList.ConsoleApp
 		{
 			Console.WriteLine("Commands:");
 			Console.WriteLine("  show");
+			Console.WriteLine("  today");
+			Console.WriteLine("  view-by-deadline");
 			Console.WriteLine("  add project <project name>");
 			Console.WriteLine("  add task <project name> <task description>");
+			Console.WriteLine("  deadline <task ID> <date>");
 			Console.WriteLine("  check <task ID>");
 			Console.WriteLine("  uncheck <task ID>");
 			Console.WriteLine("  clear");
